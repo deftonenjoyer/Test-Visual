@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Test de Agudeza Visual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .letter {
+            font-size: 120px;
+            font-weight: bold;
+            margin: 30px 0;
+            user-select: none;
+        }
+        button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de Agudeza Visual</h1>
+    <p>Mira la letra que aparece y selecciona cuál es:</p>
+    <div class="letter" id="letter">E</div>
+    <div id="options"></div>
+    <div id="result"></div>
+
+    <script>
+        const letters = ['E', 'F', 'P', 'T', 'O', 'Z', 'L', 'P', 'E', 'D'];
+        let currentLetterIndex = 0;
+
+        function mostrarLetra() {
+            const letterDiv = document.getElementById('letter');
+            letterDiv.textContent = letters[currentLetterIndex];
+            mostrarOpciones();
+        }
+
+        function mostrarOpciones() {
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            const opciones = ['E', 'F', 'P', 'T', 'O', 'Z', 'L', 'D'];
+            opciones.sort(() => Math.random() - 0.5);
+
+            opciones.forEach(letra => {
+                const btn = document.createElement('button');
+                btn.textContent = letra;
+                btn.onclick = () => evaluarRespuesta(letra);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function evaluarRespuesta(respuesta) {
+            const resultDiv = document.getElementById('result');
+            if (respuesta === letters[currentLetterIndex]) {
+                resultDiv.textContent = '¡Correcto!';
+                currentLetterIndex++;
+                if (currentLetterIndex < letters.length) {
+                    setTimeout(() => {
+                        resultDiv.textContent = '';
+                        mostrarLetra();
+                    }, 1000);
+                } else {
+                    resultDiv.textContent = '¡Test terminado! Gracias por participar.';
+                    document.getElementById('options').innerHTML = '';
+                    document.getElementById('letter').textContent = '';
+                }
+            } else {
+                resultDiv.textContent = 'Incorrecto, intenta de nuevo.';
+            }
+        }
+
+        mostrarLetra();
+    </script>
+</body>
+</html>
